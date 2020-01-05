@@ -40,6 +40,17 @@
             </v-toolbar>
           </template>
 
+          <template v-slot:item.folder="{ item }">
+            <v-icon
+              color="teal"
+              small
+              class="mr-2"
+              @click="goToFolder(item.id)"
+            >
+              mdi-folder
+            </v-icon>
+          </template>
+
           <template v-slot:footer>
             <v-container>
               <v-row class="ml-2 mr-2" align="center" justify="center">
@@ -103,6 +114,7 @@
 import { getDataWithoutURL } from "../utils/fetch-functions.js";
 
 export default {
+  name: "Patients",
   data: () => ({
     patients: [],
     headers: [
@@ -112,7 +124,8 @@ export default {
       { text: "PESEL", value: "pesel" },
       { text: "Email", value: "email" },
       { text: "Phone", value: "phone" },
-      { text: "Password", value: "password" }
+      { text: "Password", value: "password" },
+      { text: "Patient Folder", value: "folder", sortable: false }
     ],
     dense: true,
     search: "",
@@ -160,6 +173,9 @@ export default {
         this.page--;
         this.getPatients();
       }
+    },
+    goToFolder(id) {
+      this.$router.push("/patient/" + id);
     }
   },
   mounted() {
