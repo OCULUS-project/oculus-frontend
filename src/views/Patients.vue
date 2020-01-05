@@ -3,6 +3,12 @@
     <h1>Patients</h1>
     <v-row>
       <v-col cols="12">
+        <v-card color="red darken-2" dark v-if="error" class="pa-2">
+          <strong>Error: </strong>There are some problems with API. Please
+          refresh application or contact administrator.
+        </v-card>
+      </v-col>
+      <v-col cols="12">
         <v-data-table
           :headers="headers"
           :items="patients"
@@ -117,7 +123,8 @@ export default {
     page: 0,
     itemsPerPage: 30,
     numberOfPages: null,
-    numberOfPatients: null
+    numberOfPatients: null,
+    error: ""
   }),
   methods: {
     async getPatients() {
@@ -133,7 +140,7 @@ export default {
           this.numberOfPages = response.data.numberOfPages;
         })
         .catch(error => {
-          console.log(error);
+          this.error = error;
         });
 
       this.loadingData = false;
