@@ -1,4 +1,5 @@
 # oculus-frontend
+[![Build Status](https://travis-ci.org/OCULUS-project/oculus-frontend.svg?branch=master)](https://travis-ci.org/OCULUS-project/oculus-frontend.svg?branch=master) 
 
 ## Project setup
 ```
