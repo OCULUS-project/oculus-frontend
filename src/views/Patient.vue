@@ -1,13 +1,15 @@
 <template>
   <v-container>
-    <v-row v-if="patient">
+    <v-row v-if="patient && !error">
       <v-col cols="12">
         <h1>Patient folder: {{ patient.firstName }} {{ patient.lastName }}</h1>
       </v-col>
 
       <v-col cols="6" sm="12" md="6">
         <v-card class="pa-3">
-          <h3 class="mb-3">Personal Data:</h3>
+          <div class="ml-2 mb-3">
+            <span class="v-toolbar__title">Personal Data</span>
+          </div>
           <v-simple-table dense>
             <template v-slot:default>
               <tbody>
@@ -44,19 +46,30 @@
           </v-simple-table>
         </v-card>
       </v-col>
-    </v-row>
 
-    <v-col cols="12" v-if="error">
-      <v-card color="red darken-2" dark class="pa-2">
-        <strong>Error: </strong>There are some problems with API. Please refresh
-        application or contact administrator.
-      </v-card>
-    </v-col>
+      <v-col cols="12">
+        <Metrics :id="id" />
+      </v-col>
+
+      <v-col cols="12">
+        <ImageController :id="id" />
+      </v-col>
+    </v-row>
+    <v-row v-if="error">
+      <v-col cols="12">
+        <ErrorMessage
+          message="Couldn't fetch Patient data. There are some problems with API."
+        />
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script>
 import { getDataWithoutURL } from "../utils/fetch-functions.js";
+import Metrics from "../components/Metrics.vue";
+import ImageController from "../components/ImageController.vue";
+import ErrorMessage from "../components/ErrorMessage.vue";
 
 export default {
   name: "Patient",
@@ -65,6 +78,11 @@ export default {
     patient: null,
     error: null
   }),
+  components: {
+    Metrics,
+    ImageController,
+    ErrorMessage
+  },
   methods: {
     async getPatient() {
       await getDataWithoutURL("patients?id=" + this.id)
@@ -81,3 +99,13 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.table-header {
+  font-size: 1.25rem;
+  line-height: 1.5;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+</style>

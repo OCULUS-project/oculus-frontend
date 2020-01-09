@@ -1,13 +1,7 @@
 <template>
   <v-container>
     <h1>Patients</h1>
-    <v-row>
-      <v-col cols="12">
-        <v-card color="red darken-2" dark v-if="error" class="pa-2">
-          <strong>Error: </strong>There are some problems with API. Please
-          refresh application or contact administrator.
-        </v-card>
-      </v-col>
+    <v-row v-if="!error">
       <v-col cols="12">
         <v-data-table
           :headers="headers"
@@ -21,6 +15,7 @@
           :search="search"
           :key="patients.id"
           hide-default-footer
+          no-data-text="You don't have any registered patients!"
         >
           <template v-slot:top>
             <v-toolbar flat color="white">
@@ -107,11 +102,19 @@
         </v-data-table>
       </v-col>
     </v-row>
+    <v-row v-else>
+      <v-col cols="12">
+        <ErrorMessage
+          message="Couldn't fetch Patients data. There are some problems with API."
+        />
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script>
 import { getDataWithoutURL } from "../utils/fetch-functions.js";
+import ErrorMessage from "../components/ErrorMessage.vue";
 
 export default {
   name: "Patients",
@@ -139,6 +142,9 @@ export default {
     numberOfPatients: null,
     error: ""
   }),
+  components: {
+    ErrorMessage
+  },
   methods: {
     async getPatients() {
       this.loadingData = true;
@@ -147,7 +153,7 @@ export default {
         "patients/all?page=" + this.page + "&size=" + this.itemsPerPage
       )
         .then(response => {
-          this.patients = response.data.patients;
+          this.patients = response.data.patients ? response.data.patients : [];
           this.page = response.data.n;
           this.itemsPerPage = response.data.size;
           this.numberOfPages = response.data.numberOfPages;

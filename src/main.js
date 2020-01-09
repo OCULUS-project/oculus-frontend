@@ -5,8 +5,11 @@ import store from "./store";
 import vuetify from "./plugins/vuetify";
 import "roboto-fontface/css/roboto/roboto-fontface.css";
 import "@mdi/font/css/materialdesignicons.css";
+import Lightbox from "vue-my-photos";
 
+Vue.component("lightbox", Lightbox);
 Vue.config.productionTip = false;
+Vue.use(Lightbox);
 
 new Vue({
   router,
