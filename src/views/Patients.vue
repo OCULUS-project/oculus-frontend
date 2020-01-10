@@ -25,6 +25,7 @@
                 single-line
                 hide-details
               ></v-text-field>
+              <AddPatientModal />
               <div class="flex-grow-1"></div>
               <v-switch
                 v-model="dense"
@@ -78,21 +79,23 @@
                 </span>
                 <v-btn
                   fab
-                  dark
+                  :dark="page != 0"
                   small
                   color="teal"
                   class="mr-1"
                   @click="formerPage"
+                  :disabled="page == 0 || loadingData"
                 >
                   <v-icon>mdi-chevron-left</v-icon>
                 </v-btn>
                 <v-btn
                   fab
-                  dark
+                  :dark="page != numberOfPages - 1"
                   small
                   color="teal"
                   class="ml-1"
                   @click="nextPage"
+                  :disabled="page == numberOfPages - 1 || loadingData"
                 >
                   <v-icon>mdi-chevron-right</v-icon>
                 </v-btn>
@@ -115,6 +118,7 @@
 <script>
 import { getDataWithoutURL } from "../utils/fetch-functions.js";
 import ErrorMessage from "../components/ErrorMessage.vue";
+import AddPatientModal from "../components/AddPatientModal.vue";
 
 export default {
   name: "Patients",
@@ -135,7 +139,7 @@ export default {
     loadingData: false,
 
     //Footer Data
-    itemsPerPageArray: [30, 60, 90],
+    itemsPerPageArray: [30, 60, 90, 120, 240],
     page: 0,
     itemsPerPage: 30,
     numberOfPages: null,
@@ -143,7 +147,8 @@ export default {
     error: ""
   }),
   components: {
-    ErrorMessage
+    ErrorMessage,
+    AddPatientModal
   },
   methods: {
     async getPatients() {

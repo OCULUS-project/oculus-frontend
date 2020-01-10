@@ -118,6 +118,7 @@ export default {
 
       this.$refs.lightbox.show(imageName);
     },
+    //Spaghetti Start ( ͡° ͜ʖ ͡°)
     async getImageFiles() {
       this.loadingData = true;
 
@@ -148,6 +149,7 @@ export default {
         });
 
       this.loadingData = false;
+      //Spaghetti Stop ( ͡° ͜ʖ ͡°)
     }
   },
   computed: {
