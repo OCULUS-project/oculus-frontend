@@ -126,6 +126,24 @@ export default {
           console.log("DONE", result);
           this.fileId = result.data.id;
 
+          this.files.forEach(file => {
+            let formData = new FormData();
+            formData.append("content", file);
+
+            console.log(file);
+            console.log(formData);
+
+            postDataWithoutURL("img/" + this.fileId, formData, {
+              "Content-Type": "multipart/form-data"
+            })
+              .then(addImgResponse => {
+                console.log("AddImgDone", addImgResponse);
+              })
+              .catch(error => {
+                this.error = error;
+              });
+          });
+
           this.dialog = false;
         })
         .catch(err => {

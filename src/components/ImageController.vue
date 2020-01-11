@@ -133,7 +133,6 @@ export default {
                     singleFileResponse.status == 200
                       ? singleFileResponse.data.images
                       : [];
-                  console.log(singleFileResponse, images);
                 })
                 .catch(error => {
                   this.error = error;
