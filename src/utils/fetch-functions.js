@@ -6,5 +6,7 @@ export const getDataWithoutURL = async endpoint => {
 };
 
 export const postDataWithoutURL = async (endpoint, body) => {
-  return axios.post(config.URL + endpoint, body);
+  return axios.post(config.URL + endpoint, body, {
+    "Content-Type": "application/json"
+  });
 };

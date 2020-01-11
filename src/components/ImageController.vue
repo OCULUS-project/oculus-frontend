@@ -17,7 +17,8 @@
       <template v-slot:top>
         <v-toolbar flat>
           <v-toolbar-title>Image Files</v-toolbar-title>
-          <v-spacer></v-spacer>
+          <AddImagesModal :id="id" />
+          <div class="flex-grow-1"></div>
           <v-switch
             v-model="singleExpand"
             label="Single expand"
@@ -57,6 +58,9 @@
                       class="mr-2"
                     />
                   </transition-group>
+                  <p v-if="item.notes">
+                    <strong>Notes: </strong> {{ item.notes }}
+                  </p>
                 </v-card>
               </v-col>
             </v-row>
@@ -68,16 +72,8 @@
 </template>
 
 <script>
-var imageList = [
-  {
-    name: "mountains.jpg",
-    alt: "The Dolomites",
-    filter: "nature",
-    id: "image1"
-  }
-];
-
 import moment from "moment";
+import AddImagesModal from "../components/AddImagesModal.vue";
 import { getDataWithoutURL } from "../utils/fetch-functions.js";
 import { config } from "../config/constants.js";
 
@@ -86,7 +82,7 @@ export default {
   props: ["id"],
   data() {
     return {
-      images: imageList,
+      images: [],
       galleryFilter: "all",
 
       //ImageFiles - Teczki
@@ -101,8 +97,12 @@ export default {
       ],
       loadingData: false,
       expanded: [],
-      singleExpand: true
+      singleExpand: true,
+      error: null
     };
+  },
+  components: {
+    AddImagesModal
   },
   methods: {
     showLightbox: function(imageName, images) {
@@ -129,7 +129,11 @@ export default {
               let images = [];
               await getDataWithoutURL("img?fileId=" + element.id)
                 .then(singleFileResponse => {
-                  images = singleFileResponse.data.images;
+                  images =
+                    singleFileResponse.status == 200
+                      ? singleFileResponse.data.images
+                      : [];
+                  console.log(singleFileResponse, images);
                 })
                 .catch(error => {
                   this.error = error;
@@ -138,7 +142,7 @@ export default {
               return {
                 ...element,
                 images,
-                imagesCount: images.length,
+                imagesCount: images.length ? images.length : "0",
                 date: moment(element.date).format("DD MMM YYYY HH:mm:ss")
               };
             })

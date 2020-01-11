@@ -79,10 +79,9 @@
                 </span>
                 <v-btn
                   fab
-                  :dark="page != 0"
                   small
                   color="teal"
-                  class="mr-1"
+                  class="mr-1 white--text"
                   @click="formerPage"
                   :disabled="page == 0 || loadingData"
                 >
@@ -90,10 +89,9 @@
                 </v-btn>
                 <v-btn
                   fab
-                  :dark="page != numberOfPages - 1"
                   small
                   color="teal"
-                  class="ml-1"
+                  class="ml-1 white--text"
                   @click="nextPage"
                   :disabled="page == numberOfPages - 1 || loadingData"
                 >
@@ -142,8 +140,8 @@ export default {
     itemsPerPageArray: [30, 60, 90, 120, 240],
     page: 0,
     itemsPerPage: 30,
-    numberOfPages: null,
-    numberOfPatients: null,
+    numberOfPages: 1,
+    numberOfPatients: 0,
     error: ""
   }),
   components: {
