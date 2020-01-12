@@ -24,7 +24,6 @@
                 single-line
                 hide-details
               ></v-text-field>
-              <AddPatientModal @saved="getJobs" />
               <div class="flex-grow-1"></div>
               <v-switch
                 v-model="dense"
@@ -44,7 +43,12 @@
             >
               mdi-folder
             </v-icon>
-            <v-icon color="teal" small class="mr-2" @click="runJob(item.id)">
+            <v-icon
+              color="teal"
+              small
+              class="mr-2"
+              @click="runJob(item.id, item.status)"
+            >
               mdi-play
             </v-icon>
           </template>
@@ -62,9 +66,11 @@
 </template>
 
 <script>
-import { getDataWithoutURL } from "../utils/fetch-functions.js";
+import {
+  getDataWithoutURL,
+  putDataWithoutURL
+} from "../utils/fetch-functions.js";
 import ErrorMessage from "../components/ErrorMessage.vue";
-import AddPatientModal from "../components/AddPatientModal.vue";
 
 export default {
   name: "Jobs",
@@ -75,10 +81,10 @@ export default {
       { text: "Id", value: "id" },
       { text: "Doctor", value: "doctor" },
       { text: "Patient", value: "patient" },
-      { text: "Metrics", value: "metrics" },
+      { text: "Metrics", value: "patientMetrics" },
       { text: "Image File", value: "imageFile" },
       { text: "Created", value: "created" },
-      { text: "Updated", value: "Updated" },
+      { text: "Updated", value: "updated" },
       { text: "Status", value: "status" },
       { text: "Job Actions", value: "actions", sortable: false }
     ],
@@ -95,8 +101,7 @@ export default {
     error: ""
   }),
   components: {
-    ErrorMessage,
-    AddPatientModal
+    ErrorMessage
   },
   methods: {
     async getJobs() {
@@ -115,8 +120,21 @@ export default {
     goToFolder(id) {
       this.$router.push("/patient/" + id);
     },
-    runJob(id) {
+    runJob(id, status) {
       console.log("runJob", id);
+
+      let newStatus = status == "DONE" ? "NEW" : "DONE";
+
+      putDataWithoutURL("jobs/status", {
+        jobId: id,
+        newStatus: newStatus
+      })
+        .then(() => {
+          this.getJobs();
+        })
+        .catch(err => {
+          this.error = err;
+        });
     }
   },
   mounted() {

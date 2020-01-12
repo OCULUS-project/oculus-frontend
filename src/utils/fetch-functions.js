@@ -14,3 +14,13 @@ export const postDataWithoutURL = async (
 ) => {
   return axios.post(config.URL + endpoint, body, headers);
 };
+
+export const putDataWithoutURL = async (
+  endpoint,
+  body,
+  headers = {
+    "Content-Type": "application/json"
+  }
+) => {
+  return axios.put(config.URL + endpoint, body, headers);
+};
