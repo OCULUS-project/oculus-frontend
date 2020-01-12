@@ -17,7 +17,7 @@
       <template v-slot:top>
         <v-toolbar flat>
           <v-toolbar-title>Image Files</v-toolbar-title>
-          <AddImagesModal :id="id" />
+          <AddImagesModal :id="id" @saved="getImageFiles" />
           <div class="flex-grow-1"></div>
           <v-switch
             v-model="singleExpand"

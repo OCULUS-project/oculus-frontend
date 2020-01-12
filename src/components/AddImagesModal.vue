@@ -145,6 +145,7 @@ export default {
           });
 
           this.dialog = false;
+          this.$emit("saved", this.fileId);
         })
         .catch(err => {
           this.error = err;

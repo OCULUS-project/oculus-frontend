@@ -127,6 +127,7 @@ export default {
         .then(result => {
           console.log("DONE", result);
           this.dialog = false;
+          this.$emit("saved", this.fileId);
         })
         .catch(err => {
           this.error = err;

@@ -25,7 +25,7 @@
                 single-line
                 hide-details
               ></v-text-field>
-              <AddPatientModal />
+              <AddPatientModal @saved="getPatients" />
               <div class="flex-grow-1"></div>
               <v-switch
                 v-model="dense"
