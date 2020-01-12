@@ -16,7 +16,8 @@
     <template v-slot:top>
       <v-toolbar flat>
         <v-toolbar-title>Metrics</v-toolbar-title>
-        <v-spacer></v-spacer>
+        <AddMetricsModal :id="id" @saved="getMetrics" />
+        <div class="flex-grow-1"></div>
         <v-switch
           v-model="singleExpand"
           label="Single expand"
@@ -92,6 +93,7 @@
 <script>
 import moment from "moment";
 import { getDataWithoutURL } from "../utils/fetch-functions.js";
+import AddMetricsModal from "../components/AddMetricsModal.vue";
 
 export default {
   name: "Metrics",
@@ -108,6 +110,9 @@ export default {
     expanded: [],
     singleExpand: true
   }),
+  components: {
+    AddMetricsModal
+  },
   methods: {
     async getMetrics() {
       this.loadingData = true;

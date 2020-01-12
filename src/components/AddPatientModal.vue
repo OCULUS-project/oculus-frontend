@@ -15,7 +15,7 @@
             <v-row v-if="error">
               <v-col cols="12">
                 <ErrorMessage
-                  message="Couldn't create Patient. Please try again."
+                  message="Couldn't create Patient. Please try again or contact administrator."
                 />
               </v-col>
             </v-row>
